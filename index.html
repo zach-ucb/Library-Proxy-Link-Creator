@@ -36,6 +36,7 @@
 						var proxyURL = "https://libproxy.berkeley.edu/login?qurl=" + encodeURIComponent(originalURL);
 						$('#proxy-link-textarea').val(proxyURL);
 					}
+					$('#copy-link-button').text("Copy Proxy URL");
 					$('#copy-link-button').attr("disabled", false);
 				}
 				$('#original-link-textarea').on("click change keyup", function(event) {
