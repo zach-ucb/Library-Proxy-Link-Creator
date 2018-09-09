@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="style.css" rel="stylesheet">
+		<script src="jquery.js"></script>
+		<script>
+			$(document).ready(function() {
+				$('#copy-link-button').attr("disabled", true);
+			});
+		</script>
+		<title>Library Proxy Link Creator</title>
+	</head>
+	<body role="document">
+		<div id="page-container">
+			<h1 id="title">Library Proxy Link Creator</h1>
+			<h4 id="instructions">Paste the link to a UC Berkeley Library–licensed resource below to generate a proxy link. This link will allow off-campus users to access the resource after logging in with CalNet. For more information on how this works, see the Library's&nbsp;<a href="http://guides.lib.berkeley.edu/ezproxy/home" class="link">EZProxy guide</a>.</h4>
+			<div class="textarea-container">
+				<p class="textarea-label">Original URL:</p>
+				<textarea id="original-link-textarea" placeholder="Paste link here" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+			</div>
+			<div class="textarea-container">
+				<p class="textarea-label">Proxy URL:</p>
+				<textarea id="proxy-link-textarea" readonly="readonly"></textarea>
+			</div>
+			<button id="copy-link-button">Copy Proxy URL</button>
+			<script>
+				function showProxyLink() {
+					var originalURL = $('#original-link-textarea').val();
+					if (originalURL == "") {
+						$('#proxy-link-textarea').val("");
+					}
+					else {
+						var proxyURL = "https://libproxy.berkeley.edu/login?qurl=" + encodeURIComponent(originalURL);
+						$('#proxy-link-textarea').val(proxyURL);
+					}
+					$('#copy-link-button').attr("disabled", false);
+				}
+				$('#original-link-textarea').on("click change keyup", function(event) {
+					event.preventDefault();
+					showProxyLink();
+				});
+				$('#original-link-textarea').on("paste", function(event) {
+					setTimeout(function() {
+						showProxyLink();
+					}, 150)
+				});
+				$('#proxy-link-textarea').click(function(event) {
+					event.preventDefault();
+					$(this).focus();
+					$(this).select();
+				});
+				$('#copy-link-button').click(function(event) {
+					event.preventDefault();
+					$('#proxy-link-textarea').focus();
+					$('#proxy-link-textarea').select();
+					document.execCommand("copy");
+					$(this).attr("disabled", true);
+					$(this).text("Link Copied to Clipboard!");
+				});
+			</script>
+		</div>
+	</body>
+</html>
