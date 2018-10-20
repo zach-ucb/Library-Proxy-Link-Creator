@@ -55,8 +55,19 @@
 				});
 				$('#copy-link-button').click(function(event) {
 					event.preventDefault();
-					$('#proxy-link-textarea').focus();
-					$('#proxy-link-textarea').select();
+					if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+						var proxyLinkTextarea = $('#proxy-link-textarea')[0];
+						var proxyLinkRange = document.createRange();
+						proxyLinkRange.selectNodeContents(proxyLinkTextarea);
+						var selection = window.getSelection();
+						selection.removeAllRanges();
+						selection.addRange(proxyLinkRange);
+						proxyLinkTextarea.setSelectionRange(0, 1000000);
+					}
+					else {
+						$('#proxy-link-textarea').focus();
+						$('#proxy-link-textarea').select();
+					}
 					document.execCommand("copy");
 					$(this).attr("disabled", true);
 					$(this).text("Link Copied to Clipboard!");
